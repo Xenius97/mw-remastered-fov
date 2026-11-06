@@ -4,7 +4,7 @@ import struct,time,sys,hashlib,subprocess,traceback,argparse
 from pathlib import Path
 HERE=Path(__file__).resolve().parent
 parser=argparse.ArgumentParser(description='Runtime FOV adjustment for the verified MWR 1.3 single-player executable. Requires Windows and 64-bit Python 3.9+.')
-parser.add_argument('--fov',type=float,default=105.0,help='FOV between 65 and 110 (default: 105)')
+parser.add_argument('--fov',type=float,default=90.0,help='FOV between 65 and 110 (default: 90)')
 parser.add_argument('--game-dir',type=Path,help='Game folder, if the game is not already running and is not beside this tool or one folder above it')
 parser.add_argument('--test',action='store_true',help='Stop after 60 seconds')
 args=parser.parse_args()

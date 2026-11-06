@@ -1,94 +1,96 @@
-# Modern Warfare Remastered – runtime FOV
+# Modern Warfare Remastered – Runtime FOV
 
-Egyszerű, külső FOV-állító a **Call of Duty: Modern Warfare Remastered egyjátékos kampányához**. Az alapértelmezett látómező **105**, a megadható tartomány **65–110**.
+A portable field-of-view tool for the **Call of Duty: Modern Warfare Remastered single-player campaign**. The default FOV is **90**, with a supported input range of **65–110**.
 
-## Követelmények
+## Requirements
 
-- Windows, **64 bites Python 3.9 vagy újabb**.
-- Python-letöltés: [python.org – Windows](https://www.python.org/downloads/windows/). Telepítéskor engedélyezd a Python launchert (`py`), vagy add a Pythont a PATH-hoz. Telepítés után indítsd újra az indítót.
-- Nincs szükség `pip install` parancsra vagy külső Python-csomagra.
-- Rendszergazdai jóváhagyás: az eszköz induláskor UAC-engedélyt kér, hogy hozzáférjen a rendszergazdaként futó játékhoz.
+- Windows and **64-bit Python 3.9 or newer**.
+- Download Python from [python.org](https://www.python.org/downloads/windows/). Enable the Python launcher (`py`) or add Python to PATH during installation. Run the CMD launcher again after installing Python.
+- No third-party Python packages or `pip install` commands are needed.
+- Administrator permission: the tool requests UAC approval so it can access a game running as administrator.
 
-**A mappa hordozható, de nem támogat automatikusan minden játékverziót.** A javító az alább megadott, ellenőrzött 1.3-as EXE-változatokkal működik. Más EXE-t elutasít; a verziószám önmagában nem elegendő.
+**Portable paths do not mean universal game-version support.** Only the two verified version 1.3 executable variants listed below are supported. Other executables are rejected, even if their version number looks the same.
 
-## Telepítés és indítás
+## Installation and usage
 
-1. Töltsd le és csomagold ki a projektet. A `MWR FOV 105.cmd` és a `MWR-FOV.py` maradjon ugyanabban a mappában.
-2. Tedd őket a `h1_sp64_ship.exe` mellé, vagy a játék könyvtárán belül egy almappába, például `fov` néven. Ebben az elrendezésben az indító a játékot is elindítja, ha még nem fut.
-3. Más helyen is tarthatod a mappát. Ilyenkor előbb indítsd el a kampányt, majd az indítót; az eszköz a futó játékból határozza meg a játék könyvtárát.
-4. Kattints duplán a `MWR FOV 105.cmd` fájlra, és engedélyezd a rendszergazdai indítást.
-5. Tölts be egy pályát. A konzolban megjelennek a kiolvasott FOV-értékek. **A javító ablakát hagyd nyitva játék közben.**
+1. Download and extract the project. Keep `MWR FOV 90.cmd` and `MWR-FOV.py` together.
+2. Place them beside `h1_sp64_ship.exe`, or in an immediate subfolder of the game directory, such as `fov`. In either location, the launcher can start the game if it is not already running.
+3. You can also keep the tool anywhere else. In that case, start the campaign first, then run the tool. It detects the running game's location automatically.
+4. Double-click `MWR FOV 90.cmd` and approve the administrator prompt.
+5. Load a mission. The console displays the detected FOV values. **Keep the tool's window open while playing.**
 
-Az indító a saját mappájából keresi a Python-fájlt, ezért parancssorból bármilyen aktuális könyvtárból elindítható. Nem tartalmaz felhasználóhoz vagy meghajtóhoz kötött telepítési útvonalat. A Python továbbra is szükséges minden gépen.
+The launcher locates its Python script relative to its own directory, so it also works when launched from a different working directory. No username, Python installation directory, or game drive is hardcoded. Each computer still needs Python installed.
 
-## Saját FOV beállítása
+## Choosing your own FOV
 
-1. Jobb kattintás a `MWR FOV 105.cmd` fájlra → **Szerkesztés** (például Jegyzettömbbel).
-2. Keresd meg ezt a sort:
-
-   ```bat
-   set "FOV=105"
-   ```
-
-3. Írd át a számot a kívánt értékre, például:
+1. Right-click `MWR FOV 90.cmd` and open it in a text editor, such as Notepad.
+2. Find this line:
 
    ```bat
    set "FOV=90"
    ```
 
-4. Mentsd el a fájlt. Ha a javító már fut, zárd be az ablakát, majd indítsd újra. A játékot ehhez nem kell újraindítani.
+3. Replace the number with your preferred value. For example:
 
-A nagyobb szám szélesebb látómezőt jelent. A megengedett tartomány **65–110**; azon kívüli értékkel az eszköz nem indul el. Egyszerre csak egy példány fusson. A CMD neve nem határozza meg a FOV-ot: átnevezheted például `MWR FOV.cmd` névre.
+   ```bat
+   set "FOV=105"
+   ```
 
-Parancssorból is megadható az érték:
+4. Save the file. If the tool is running, close its window and launch it again. You do not need to restart the game.
 
-```bat
-py -3 "D:\Tools\fov\MWR-FOV.py" --fov 90
-```
+Higher values give a wider field of view. Values outside **65–110** are rejected. Run only one instance at a time. The CMD filename does not control the FOV; you may rename it to `MWR FOV.cmd` if you prefer.
 
-Ha a játék még nem fut, és a javító külön könyvtárban van:
-
-```bat
-py -3 "D:\Tools\fov\MWR-FOV.py" --fov 105 --game-dir "D:\Games\Call of Duty Modern Warfare Remastered"
-```
-
-Az asztali/parancsfájlos indító további argumentumokat is elfogad:
+You can also set the value directly from a terminal:
 
 ```bat
-"D:\Tools\fov\MWR FOV 105.cmd" --fov 95 --game-dir "D:\Games\Call of Duty Modern Warfare Remastered"
+py -3 "D:\Tools\fov\MWR-FOV.py" --fov 105
 ```
 
-## Mit módosít?
+If the game is not running and the tool is stored elsewhere, specify the game directory:
 
-A javító a futó `h1_sp64_ship.exe` folyamatban megkeresi és ellenőrzi a `cg_fov` beállítást, majd annak aktuális, függőben lévő és visszaállítási értékét a választott FOV-ra állítja. Körülbelül 50 milliszekundumonként ellenőriz, és csak eltéréskor ír új értéket. Az írást visszaolvasással ellenőrzi.
+```bat
+py -3 "D:\Tools\fov\MWR-FOV.py" --fov 90 --game-dir "D:\Games\Call of Duty Modern Warfare Remastered"
+```
 
-**A runtime javító nem módosítja a lemezen lévő EXE-t vagy a játék konfigurációs fájljait.** Külön DLL/mod telepítése és az előző statikus EXE-patch nem szükséges hozzá. A tesztelt játékban a korábbi alapérték-módosítás önmagában nem volt elegendő; a futás közbeni FOV-állítás működött.
+The CMD launcher also accepts additional arguments:
 
-A konzol bezárása vagy a **Ctrl+C** leállítja az érték fenntartását; nem állítja rögtön vissza a korábbi FOV-ot. A játék teljes újraindítása törli a memóriabeli módosítást. Az eszköz a játék bezárásakor leáll.
+```bat
+"D:\Tools\fov\MWR FOV 90.cmd" --fov 95 --game-dir "D:\Games\Call of Duty Modern Warfare Remastered"
+```
 
-Kizárólag az ellenőrzött **single-player kampányhoz** készült; multiplayerhez nincs támogatás. A projekt nem tartalmaz játékfájlokat, játék-EXE-t vagy DRM-módosítást.
+For a 60-second test, add `--test`. Use `--help` to display all options.
 
-## Támogatott EXE-k
+## How it works
 
-Az ellenőrzött 1.3-as kiadás SHA-256 azonosítói:
+The tool locates and validates the `cg_fov` setting in the running `h1_sp64_ship.exe` process. It sets the current, latched, and reset values to your chosen FOV. It checks approximately every 50 milliseconds, writes only when a value differs, and verifies each write by reading the value back.
 
-| Változat | SHA-256 |
+**The runtime tool does not modify the executable or game configuration files on disk.** No separate DLL mod or static executable patch is required.
+
+Closing the console or pressing **Ctrl+C** stops enforcing the value. It does not immediately restore the previous FOV. Fully restarting the game clears the memory changes. The tool exits when the game closes.
+
+This tool is intended only for the verified **single-player campaign**. Multiplayer is unsupported. This project does not include game files, game executables, or DRM modifications.
+
+## Supported executables
+
+Verified version 1.3 executable SHA-256 hashes:
+
+| Variant | SHA-256 |
 | --- | --- |
-| A tesztelt telepítés módosítás előtti EXE-je | `f89c09864b88ef09bcceeebc1cdd7dcd19adeaf073ff464b1cc186e667f77cb5` |
-| Ugyanez a korábbi, egybájtos 90-es alapérték-patch után | `d150b4414edcde81c9eed844ac232326d46cf4cd0ebb155506a80b3687b48702` |
+| Tested installation's executable before the optional static patch | `f89c09864b88ef09bcceeebc1cdd7dcd19adeaf073ff464b1cc186e667f77cb5` |
+| Same executable with the earlier one-byte default-FOV-90 patch | `d150b4414edcde81c9eed844ac232326d46cf4cd0ebb155506a80b3687b48702` |
 
-A javító emellett ellenőrzi a memóriában lévő kódrészletet, a FOV-beállítás azonosítóját és típusát. Ismeretlen változat esetén nem ír a folyamat memóriájába. Nem általános megoldás minden Steam- vagy egyéb játékkiadáshoz.
+The tool also checks a runtime code signature and the FOV setting's identifier and type. Unknown executable builds are rejected before any memory writes. Support for other Steam or non-Steam builds is not implied.
 
-## Hibaelhárítás
+## Troubleshooting
 
-- **Python szükséges / nem található:** telepíts 64 bites Python 3.9+ verziót, a launcherrel vagy PATH-beállítással együtt.
-- **Game process not found / a játék EXE-je nem található:** indítsd el előbb a kampányt, tedd a javítót a játék mellé vagy közvetlen almappájába, illetve használd a `--game-dir` kapcsolót.
-- **Unsupported executable:** az EXE nem egyezik a két tesztelt változattal. Ne töröld a verzióellenőrzést: más verzióban eltérhetnek a memóriacímek.
-- **Access denied:** engedélyezd az indító UAC-kérését, és ellenőrizd, hogy rendszergazdaként fut-e.
-- **Nem látszik változás:** pályán ellenőrizd, ne csak a főmenüben. Nézd meg a konzolban a FOV-értékeket, és zárd be a többi FOV-állító példányt.
+- **Python required / not found:** install 64-bit Python 3.9 or newer with the Python launcher or PATH integration enabled.
+- **Game process not found / game executable not found:** start the campaign first, place the tool beside the game EXE or in an immediate subfolder, or use `--game-dir`.
+- **Unsupported executable:** your executable does not match either verified build. Do not remove the version check; memory addresses may differ between builds.
+- **Access denied:** approve the UAC prompt and make sure the tool runs as administrator.
+- **No visible change:** check during active gameplay, inspect the console values, and close any other FOV tools or duplicate instances.
 
-A diagnosztika a javító mappájában, a `FOV-runtime.log` fájlban található. Minden indítás felülírja. Hibajelentés előtt nézd át, mert tartalmazhatja a játék helyi elérési útját.
+Diagnostics are written to `FOV-runtime.log` beside the Python script. The log is overwritten at each launch. Review it before posting a bug report: it may contain your local game installation path.
 
-## Fejlesztői megjegyzés
+## Technical reference
 
-A beállítás struktúrájának nyilvános referenciája: [Aurora H1-Mod – dvar_t](https://github.com/auroramod/h1-mod/blob/develop/src/client/game/structs.hpp). A folyamaton belüli címek a helyileg megvizsgált EXE-hez tartoznak. Más kiadás támogatásához külön vizsgálat és tesztelés szükséges.
+Public reference for the setting structure: [Aurora H1-Mod – dvar_t](https://github.com/auroramod/h1-mod/blob/develop/src/client/game/structs.hpp). Runtime offsets were identified in the locally inspected executable. Additional builds require separate analysis and testing.

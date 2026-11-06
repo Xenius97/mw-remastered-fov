@@ -69,28 +69,3 @@ The tool locates and validates the `cg_fov` setting in the running `h1_sp64_ship
 Closing the console or pressing **Ctrl+C** stops enforcing the value. It does not immediately restore the previous FOV. Fully restarting the game clears the memory changes. The tool exits when the game closes.
 
 This tool is intended only for the verified **single-player campaign**. Multiplayer is unsupported. This project does not include game files, game executables, or DRM modifications.
-
-## Supported executables
-
-Verified version 1.3 executable SHA-256 hashes:
-
-| Variant | SHA-256 |
-| --- | --- |
-| Tested installation's executable before the optional static patch | `f89c09864b88ef09bcceeebc1cdd7dcd19adeaf073ff464b1cc186e667f77cb5` |
-| Same executable with the earlier one-byte default-FOV-90 patch | `d150b4414edcde81c9eed844ac232326d46cf4cd0ebb155506a80b3687b48702` |
-
-The tool also checks a runtime code signature and the FOV setting's identifier and type. Unknown executable builds are rejected before any memory writes. Support for other Steam or non-Steam builds is not implied.
-
-## Troubleshooting
-
-- **Python required / not found:** install 64-bit Python 3.9 or newer with the Python launcher or PATH integration enabled.
-- **Game process not found / game executable not found:** start the campaign first, place the tool beside the game EXE or in an immediate subfolder, or use `--game-dir`.
-- **Unsupported executable:** your executable does not match either verified build. Do not remove the version check; memory addresses may differ between builds.
-- **Access denied:** approve the UAC prompt and make sure the tool runs as administrator.
-- **No visible change:** check during active gameplay, inspect the console values, and close any other FOV tools or duplicate instances.
-
-Diagnostics are written to `FOV-runtime.log` beside the Python script. The log is overwritten at each launch. Review it before posting a bug report: it may contain your local game installation path.
-
-## Technical reference
-
-Public reference for the setting structure: [Aurora H1-Mod – dvar_t](https://github.com/auroramod/h1-mod/blob/develop/src/client/game/structs.hpp). Runtime offsets were identified in the locally inspected executable. Additional builds require separate analysis and testing.
